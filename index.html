@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>猛健樂減重追蹤｜陳彥頻</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600&family=DM+Mono:wght@300;400&family=Playfair+Display:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --warm-white: #F5F0E8;
+    --blush: #E8C4B8;
+    --rose: #C9756A;
+    --clay: #A05848;
+    --sage: #7A9E8E;
+    --deep-sage: #4A7060;
+    --ink: #2C2420;
+    --muted: #8A7A74;
+    --gold: #C4965A;
+    --light-gold: #E8D5B0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Noto Serif TC', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  .header {
+    padding: 48px 40px 32px;
+    border-bottom: 1px solid var(--blush);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+  }
+
+  .header-left h1 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(28px, 5vw, 48px);
+    color: var(--clay);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+
+  .header-left p {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  .header-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .stat-pill {
+    text-align: right;
+  }
+
+  .stat-pill .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .stat-pill .value {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--clay);
+    line-height: 1.2;
+  }
+
+  .stat-pill .sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--sage);
+  }
+
+  .main {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Section title */
+  .section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--blush);
+  }
+
+  /* Chart Card */
+  .chart-card {
+    background: white;
+    border: 1px solid var(--blush);
+    border-radius: 2px;
+    padding: 32px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chart-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--rose), var(--blush));
+  }
+
+  .chart-card h2 {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .chart-card .chart-desc {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .chart-wrap {
+    height: 280px;
+    position: relative;
+  }
+
+  /* Phase badges */
+  .phase-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .phase-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .phase-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  /* Metrics grid */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .metric-card {
+    background: white;
+    border: 1px solid var(--blush);
+    border-radius: 2px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+
+  .metric-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .metric-card .m-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .metric-card .m-value {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .metric-card .m-change {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    margin-top: 6px;
+  }
+
+  .metric-card .m-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .good { color: var(--deep-sage); }
+  .warn { color: var(--gold); }
+  .danger { color: var(--rose); }
+
+  .metric-card.highlight {
+    background: linear-gradient(135deg, var(--clay) 0%, var(--rose) 100%);
+    color: white;
+    border-color: transparent;
+  }
+
+  .metric-card.highlight .m-label,
+  .metric-card.highlight .m-value,
+  .metric-card.highlight .m-change,
+  .metric-card.highlight .m-sub {
+    color: rgba(255,255,255,0.9);
+  }
+
+  .metric-card.highlight .m-value {
+    color: white;
+  }
+
+  /* Timeline */
+  .timeline {
+    background: white;
+    border: 1px solid var(--blush);
+    border-radius: 2px;
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+
+  .timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .timeline-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--warm-white);
+  }
+
+  .timeline-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--warm-white);
+    vertical-align: middle;
+  }
+
+  .timeline-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .timeline-table tr:hover td {
+    background: var(--warm-white);
+  }
+
+  .dose-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 400;
+  }
+
+  .dose-2 { background: var(--light-gold); color: var(--clay); }
+  .dose-3 { background: var(--blush); color: var(--clay); }
+  .dose-5 { background: var(--rose); color: white; }
+
+  .change-pos { color: var(--rose); font-family: 'DM Mono', monospace; font-size: 11px; }
+  .change-neg { color: var(--deep-sage); font-family: 'DM Mono', monospace; font-size: 11px; }
+
+  /* Advice section */
+  .advice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 640px) {
+    .advice-grid { grid-template-columns: 1fr; }
+    .header { flex-direction: column; align-items: flex-start; }
+    .header-stats { justify-content: flex-start; }
+    .main { padding: 24px 20px; }
+  }
+
+  .advice-card {
+    background: white;
+    border: 1px solid var(--blush);
+    border-radius: 2px;
+    padding: 28px;
+  }
+
+  .advice-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--clay);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .advice-card h3 .icon {
+    font-size: 18px;
+  }
+
+  .advice-list {
+    list-style: none;
+  }
+
+  .advice-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--warm-white);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink);
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .advice-list li:last-child { border-bottom: none; }
+
+  .advice-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--blush);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .advice-list li strong {
+    color: var(--clay);
+  }
+
+  /* Progress bar */
+  .progress-section {
+    background: white;
+    border: 1px solid var(--blush);
+    padding: 28px 32px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+  }
+
+  .progress-item {
+    margin-bottom: 20px;
+  }
+
+  .progress-item:last-child { margin-bottom: 0; }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+
+  .progress-label {
+    font-size: 13px;
+    color: var(--ink);
+  }
+
+  .progress-nums {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .progress-bar-bg {
+    height: 6px;
+    background: var(--warm-white);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s ease;
+  }
+
+  .fill-rose { background: linear-gradient(90deg, var(--blush), var(--rose)); }
+  .fill-sage { background: linear-gradient(90deg, #b8d4ca, var(--deep-sage)); }
+  .fill-gold { background: linear-gradient(90deg, var(--light-gold), var(--gold)); }
+
+  /* Countdown strip */
+  .countdown-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 640px) {
+    .countdown-strip { grid-template-columns: 1fr; }
+  }
+
+  .countdown-card {
+    border-radius: 2px;
+    padding: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--blush);
+    background: white;
+  }
+
+  .countdown-card.active {
+    background: linear-gradient(135deg, var(--clay), var(--rose));
+    border-color: transparent;
+    color: white;
+  }
+
+  .countdown-card.future {
+    background: white;
+    opacity: 0.85;
+  }
+
+  .countdown-card .cd-emoji {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .countdown-card .cd-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .countdown-card.active .cd-title {
+    color: rgba(255,255,255,0.7);
+  }
+
+  .countdown-card .cd-days {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--clay);
+  }
+
+  .countdown-card.active .cd-days {
+    color: white;
+  }
+
+  .countdown-card .cd-days-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .countdown-card.active .cd-days-label {
+    color: rgba(255,255,255,0.7);
+  }
+
+  .countdown-card .cd-target {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--clay);
+    margin-top: 8px;
+  }
+
+  .countdown-card.active .cd-target {
+    color: white;
+  }
+
+  .countdown-card .cd-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .countdown-card.active .cd-date {
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* Footer note */
+  .footer-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-align: center;
+    padding: 24px 0;
+    border-top: 1px solid var(--blush);
+    letter-spacing: 1px;
+  }
+
+  /* Composition comparison */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  @media (max-width: 640px) {
+    .comp-grid { grid-template-columns: 1fr; }
+  }
+
+  .comp-card {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid var(--warm-white);
+    border-radius: 2px;
+  }
+
+  .comp-card .date-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .comp-ring {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 12px;
+  }
+
+  .comp-stats {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+
+  .comp-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--clay);
+    font-weight: 400;
+  }
+
+  .comp-score-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Weight Journey</h1>
+    <p>猛健樂（Mounjaro）用藥追蹤 · 115年1月起</p>
+  </div>
+  <div class="header-stats">
+    <div class="stat-pill">
+      <div class="label">起始體重</div>
+      <div class="value">81.45</div>
+      <div class="sub">kg · 115/1/8</div>
+    </div>
+    <div class="stat-pill">
+      <div class="label">最新體重</div>
+      <div class="value" style="color: var(--deep-sage);">76.0</div>
+      <div class="sub">kg · 4/30</div>
+    </div>
+    <div class="stat-pill">
+      <div class="label">總減重</div>
+      <div class="value" style="color: var(--deep-sage);">▼ 5.45</div>
+      <div class="sub">kg · 約16週</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Milestone countdowns -->
+  <div class="section-title">里程碑倒數</div>
+  <div class="countdown-strip">
+    <div class="countdown-card active" id="card1">
+      <div class="cd-emoji">✈️</div>
+      <div class="cd-title">高松之旅</div>
+      <div class="cd-days" id="days1">—</div>
+      <div class="cd-days-label">天後出發</div>
+      <div class="cd-target">目標 70 kg</div>
+      <div class="cd-date">2026年6月19日出發</div>
+    </div>
+    <div class="countdown-card future" id="card2">
+      <div class="cd-emoji">🌸</div>
+      <div class="cd-title">中繼目標</div>
+      <div class="cd-days" id="days2">—</div>
+      <div class="cd-days-label">天後</div>
+      <div class="cd-target">目標 68 kg</div>
+      <div class="cd-date">2026年8月初</div>
+    </div>
+    <div class="countdown-card future" id="card3">
+      <div class="cd-emoji">🎀</div>
+      <div class="cd-title">女兒抓周</div>
+      <div class="cd-days" id="days3">—</div>
+      <div class="cd-days-label">天後</div>
+      <div class="cd-target">目標 65 kg</div>
+      <div class="cd-date">2026年9月</div>
+    </div>
+  </div>
+
+  <!-- Key metrics -->
+  <div class="section-title">關鍵進展</div>
+  <div class="metrics-grid">
+    <div class="metric-card highlight">
+      <div class="m-label">總減重量</div>
+      <div class="m-value">5.45 kg</div>
+      <div class="m-change">↓ 6.7% 體重減幅</div>
+      <div class="m-sub">115/1/8 → 4/30</div>
+    </div>
+    <div class="metric-card">
+      <div class="m-label">體脂肪量</div>
+      <div class="m-value good">37 → 33.7 <span style="font-size:14px">kg</span></div>
+      <div class="m-change good">↓ 3.3 kg 脂肪</div>
+      <div class="m-sub">1/30報告 → 4/23報告</div>
+    </div>
+    <div class="metric-card">
+      <div class="m-label">體脂率</div>
+      <div class="m-value warn">46.5% → 44%</div>
+      <div class="m-change warn">↓ 2.5% · 仍偏高</div>
+      <div class="m-sub">目標：35% 以下</div>
+    </div>
+    <div class="metric-card">
+      <div class="m-label">內臟脂肪</div>
+      <div class="m-value good">17 → 15</div>
+      <div class="m-change good">↓ 2 · 持續改善中</div>
+      <div class="m-sub">目標：10 以下</div>
+    </div>
+    <div class="metric-card">
+      <div class="m-label">健康評分</div>
+      <div class="m-value">54 → 58 <span style="font-size:14px">分</span></div>
+      <div class="m-change good">↑ 4分 · 穩定進步</div>
+      <div class="m-sub">1/30 → 4/23</div>
+    </div>
+    <div class="metric-card">
+      <div class="m-label">腰圍</div>
+      <div class="m-value warn">93.5 → 93 <span style="font-size:14px">cm</span></div>
+      <div class="m-change warn">↓ 0.5 cm · 進展緩慢</div>
+      <div class="m-sub">目標：80 cm 以下</div>
+    </div>
+  </div>
+
+  <!-- Weight chart -->
+  <div class="section-title">體重趨勢圖</div>
+  <div class="chart-card">
+    <h2>體重變化（每週）</h2>
+    <div class="chart-desc">三個劑量階段疊加顯示 · 數據來源：個人量測紀錄</div>
+    <div class="chart-wrap">
+      <canvas id="weightChart"></canvas>
+    </div>
+    <div class="phase-legend">
+      <div class="phase-badge"><div class="phase-dot" style="background:#E8C4B8"></div>第一階段 2.5mg（1/8–2/26）</div>
+      <div class="phase-badge"><div class="phase-dot" style="background:#C9756A"></div>第二階段 3.5mg（2/26–3/26）</div>
+      <div class="phase-badge"><div class="phase-dot" style="background:#7A9E8E"></div>第三階段 5mg（3/26起）</div>
+    </div>
+  </div>
+
+  <!-- Body composition chart -->
+  <div class="section-title">身體組成比較</div>
+  <div class="chart-card">
+    <h2>體重 ｜ 骨骼肌重 ｜ 體脂肪量 趨勢</h2>
+    <div class="chart-desc">來自量測報告（1/30、2/26、3/26、4/23）</div>
+    <div class="chart-wrap">
+      <canvas id="compChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Progress toward goals -->
+  <div class="section-title">目標達成進度</div>
+  <div class="progress-section">
+    <div class="progress-item">
+      <div class="progress-header">
+        <span class="progress-label">🎀 體重終極目標：65 kg（9月抓周前）</span>
+        <span class="progress-nums">已減 5.45 kg ／ 目標共減 16.45 kg</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill fill-rose" style="width: 33%"></div>
+      </div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-header">
+        <span class="progress-label">✈️ 高松里程碑：70 kg（6月底）</span>
+        <span class="progress-nums">目前 76 kg ／ 還需再減 6 kg</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill fill-rose" style="width: 48%"></div>
+      </div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-header">
+        <span class="progress-label">體脂率目標：降至 35%（起始 46.5%）</span>
+        <span class="progress-nums">目前 44% ／ 已改善 2.5%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill fill-rose" style="width: 22%"></div>
+      </div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-header">
+        <span class="progress-label">內臟脂肪目標：降至 10（起始 17）</span>
+        <span class="progress-nums">目前 15 ／ 改善 2</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill fill-sage" style="width: 29%"></div>
+      </div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-header">
+        <span class="progress-label">健康評分目標：達到 70 分（起始 54 分）</span>
+        <span class="progress-nums">目前 58 分 ／ 進步 4 分</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill fill-gold" style="width: 25%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 詳細數據表 -->
+  <div class="section-title">完整紀錄</div>
+  <div class="timeline">
+    <table class="timeline-table">
+      <thead>
+        <tr>
+          <th>日期</th>
+          <th>劑量</th>
+          <th>體重 (kg)</th>
+          <th>週變化</th>
+          <th>備註</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>115/1/8</td><td><span class="dose-badge dose-2">2.5mg 起始</span></td><td>81.45</td><td>—</td><td>起始量測，體脂46.5%，內臟脂肪17</td></tr>
+        <tr><td>1/15</td><td><span class="dose-badge dose-2">2.5mg</span></td><td>79.9</td><td><span class="change-neg">▼ 1.55</span></td><td></td></tr>
+        <tr><td>1/22</td><td><span class="dose-badge dose-2">2.5mg</span></td><td>78.8</td><td><span class="change-neg">▼ 1.1</span></td><td></td></tr>
+        <tr><td>1/29</td><td><span class="dose-badge dose-2">2.5mg</span></td><td>78.8</td><td>—</td><td>1/30 報告：78.75kg，體脂47%，內臟15，評分54</td></tr>
+        <tr><td>2/5</td><td><span class="dose-badge dose-2">2.5mg</span></td><td>78.3</td><td><span class="change-neg">▼ 0.5</span></td><td></td></tr>
+        <tr><td>2/12</td><td><span class="dose-badge dose-2">2.5mg</span></td><td>79.1</td><td><span class="change-pos">▲ 0.8</span></td><td>體重回升，可能平台期</td></tr>
+        <tr><td>2/19</td><td><span class="dose-badge dose-2">2.5mg</span></td><td>79.1</td><td>—</td><td></td></tr>
+        <tr><td>2/26</td><td><span class="dose-badge dose-3">3.5mg 升劑量</span></td><td>79.6</td><td><span class="change-pos">▲ 0.5</span></td><td>2/26 報告：80.25kg，體脂43%，內臟16，評分59</td></tr>
+        <tr><td>3/5</td><td><span class="dose-badge dose-3">3.5mg</span></td><td>78.9</td><td><span class="change-neg">▼ 0.7</span></td><td></td></tr>
+        <tr><td>3/12</td><td><span class="dose-badge dose-3">3.5mg</span></td><td>78.9</td><td>—</td><td></td></tr>
+        <tr><td>3/19</td><td><span class="dose-badge dose-3">3.5mg</span></td><td>78.4</td><td><span class="change-neg">▼ 0.5</span></td><td></td></tr>
+        <tr><td>3/26</td><td><span class="dose-badge dose-5">5mg 升劑量</span></td><td>77.5</td><td><span class="change-neg">▼ 0.9</span></td><td>3/26 報告：78.35kg，體脂45%，內臟16，評分55</td></tr>
+        <tr><td>4/2</td><td><span class="dose-badge dose-5">5mg</span></td><td>77.4</td><td><span class="change-neg">▼ 0.1</span></td><td></td></tr>
+        <tr><td>4/9</td><td><span class="dose-badge dose-5">5mg</span></td><td>76.7</td><td><span class="change-neg">▼ 0.7</span></td><td></td></tr>
+        <tr><td>4/16</td><td><span class="dose-badge dose-5">5mg</span></td><td>76.4</td><td><span class="change-neg">▼ 0.3</span></td><td></td></tr>
+        <tr><td>4/23</td><td><span class="dose-badge dose-5">5mg</span></td><td>75.8</td><td><span class="change-neg">▼ 0.6</span></td><td>4/23 報告：76.4kg，體脂44%，內臟15，評分58，身體年齡39</td></tr>
+        <tr><td>4/30</td><td><span class="dose-badge dose-5">5mg</span></td><td>76.0</td><td><span class="change-pos">▲ 0.2</span></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Advice -->
+  <div class="section-title">個人化建議</div>
+  <div class="advice-grid">
+    <div class="advice-card">
+      <h3><span class="icon">🥗</span> 飲食建議</h3>
+      <ul class="advice-list">
+        <li><strong>蛋白質優先：</strong>每餐至少30g蛋白質，肌肉量偏低需護肌（目標肌肉控制+2.3kg）</li>
+        <li><strong>卡路里赤字溫和：</strong>基礎代謝約1292kcal，每日攝取1400–1600kcal，避免過度限食</li>
+        <li><strong>控制碳水時機：</strong>澱粉集中在運動前後攝取，晚餐以蛋白質+蔬菜為主</li>
+        <li><strong>多喝水：</strong>每日2–2.5L，有助內臟脂肪代謝</li>
+        <li><strong>注意噁心感：</strong>施打後1–2天如有副作用，以流質、小份量進食為主</li>
+        <li><strong>減少精製糖：</strong>體脂率44%仍高，要嚴格控糖（手搖飲、甜點頻率降低）</li>
+      </ul>
+    </div>
+    <div class="advice-card">
+      <h3><span class="icon">🏃</span> 運動建議</h3>
+      <ul class="advice-list">
+        <li><strong>阻力訓練優先：</strong>每週2–3次，針對骨骼肌22.9kg（偏低），護肌同時燃脂</li>
+        <li><strong>有氧輔助：</strong>每週3–4次快走/慢跑30分鐘，幫助內臟脂肪15→10</li>
+        <li><strong>循序漸進：</strong>4/9已出現「0:20分鐘，N=10輪」紀錄，維持並每週微增強度</li>
+        <li><strong>腰圍改善重點：</strong>核心訓練（棒式、捲腹）每次加入10–15分鐘</li>
+        <li><strong>施打後避開：</strong>注射當天和隔天如有腸胃不適，改做輕度伸展即可</li>
+        <li><strong>血壓改善佳：</strong>起始124/80→118/70，持續有氧有助維持</li>
+      </ul>
+    </div>
+    <div class="advice-card">
+      <h3><span class="icon">📊</span> 數據觀察</h3>
+      <ul class="advice-list">
+        <li><strong>平台期警示：</strong>2/12–2/26出現體重回升，升劑量後突破，5mg後趨勢最穩定</li>
+        <li><strong>脂肪 vs 肌肉：</strong>體脂從37→33.7kg（↓3.3kg），肌肉從22.3→22.9kg（↑0.6kg），方向正確</li>
+        <li><strong>皮下脂肪仍高：</strong>29.5kg，建議飲食與阻力訓練雙管齊下</li>
+        <li><strong>身體年齡下降：</strong>40→39歲，持續努力可望再降</li>
+        <li><strong>週量測建議：</strong>固定清晨空腹量測，避免數據波動干擾判斷</li>
+      </ul>
+    </div>
+    <div class="advice-card">
+      <h3><span class="icon">🎯</span> 里程碑目標</h3>
+      <ul class="advice-list">
+        <li><strong>✈️ 6月底高松行前：</strong>體重 70 kg，體脂率 41%</li>
+        <li><strong>🌸 8月初中繼：</strong>體重 68 kg，體脂率 39%</li>
+        <li><strong>🎀 9月抓周終極：</strong>體重 65 kg，體脂率 35% 以下</li>
+        <li><strong>每週減重節奏：</strong>0.3–0.8 kg 為健康範圍，5mg 階段表現良好</li>
+        <li><strong>腰圍突破：</strong>目前93cm停滯，強化核心+飲食控糖可望降至85cm</li>
+        <li><strong>下次報告重點：</strong>記錄骨骼肌重，確認護肌成效</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-note">資料更新至 2026/04/30 · 僅供個人健康紀錄參考，非醫療建議</div>
+
+<script>
+// Countdown
+function calcDays(target) {
+  const now = new Date();
+  const t = new Date(target);
+  return Math.ceil((t - now) / (1000 * 60 * 60 * 24));
+}
+document.getElementById('days1').textContent = calcDays('2026-06-19');
+document.getElementById('days2').textContent = calcDays('2026-08-01');
+document.getElementById('days3').textContent = calcDays('2026-09-04');
+
+// Weight data
+const labels = ['1/8','1/15','1/22','1/29','2/5','2/12','2/19','2/26','3/5','3/12','3/19','3/26','4/2','4/9','4/16','4/23','4/30'];
+const weights = [81.45,79.9,78.8,78.8,78.3,79.1,79.1,79.6,78.9,78.9,78.4,77.5,77.4,76.7,76.4,75.8,76.0];
+
+// Phase colors per point
+const phaseColors = weights.map((_, i) => {
+  if (i <= 6) return '#E8C4B8';       // 2.5mg
+  else if (i <= 11) return '#C9756A'; // 3.5mg
+  else return '#7A9E8E';              // 5mg
+});
+
+const borderColors = weights.map((_, i) => {
+  if (i <= 6) return '#C9756A';
+  else if (i <= 11) return '#A05848';
+  else return '#4A7060';
+});
+
+// Weight Chart
+const ctx1 = document.getElementById('weightChart').getContext('2d');
+
+// Phase background plugin
+const phasePlugin = {
+  id: 'phaseBackground',
+  beforeDraw(chart) {
+    const {ctx, chartArea, scales} = chart;
+    if (!chartArea) return;
+    const xScale = scales.x;
+    
+    const phases = [
+      {start: 0, end: 6, color: 'rgba(232,196,184,0.15)'},
+      {start: 6, end: 11, color: 'rgba(201,117,106,0.12)'},
+      {start: 11, end: 16, color: 'rgba(122,158,142,0.12)'},
+    ];
+    
+    ctx.save();
+    phases.forEach(p => {
+      const x1 = xScale.getPixelForIndex(p.start);
+      const x2 = xScale.getPixelForIndex(p.end);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(x1, chartArea.top, x2 - x1, chartArea.height);
+    });
+    ctx.restore();
+  }
+};
+
+new Chart(ctx1, {
+  type: 'line',
+  plugins: [phasePlugin],
+  data: {
+    labels,
+    datasets: [{
+      label: '體重 (kg)',
+      data: weights,
+      borderColor: '#C9756A',
+      backgroundColor: 'rgba(201,117,106,0.08)',
+      borderWidth: 2,
+      pointBackgroundColor: phaseColors,
+      pointBorderColor: borderColors,
+      pointBorderWidth: 1.5,
+      pointRadius: 5,
+      pointHoverRadius: 7,
+      tension: 0.3,
+      fill: true
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#2C2420',
+        titleColor: '#E8C4B8',
+        bodyColor: '#FAF7F2',
+        padding: 12,
+        callbacks: {
+          label: ctx => ` ${ctx.raw} kg`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(0,0,0,0.04)' },
+        ticks: { font: { family: 'DM Mono', size: 10 }, color: '#8A7A74' }
+      },
+      y: {
+        min: 73,
+        max: 83,
+        grid: { color: 'rgba(0,0,0,0.04)' },
+        ticks: {
+          font: { family: 'DM Mono', size: 10 },
+          color: '#8A7A74',
+          callback: v => v + ' kg'
+        }
+      }
+    }
+  }
+});
+
+// Body Composition Chart
+const ctx2 = document.getElementById('compChart').getContext('2d');
+new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels: ['1/30', '2/26', '3/26', '4/23'],
+    datasets: [
+      {
+        label: '體重 (kg)',
+        data: [78.75, 80.25, 78.35, 76.4],
+        backgroundColor: 'rgba(201,117,106,0.7)',
+        borderColor: '#C9756A',
+        borderWidth: 1,
+        borderRadius: 2,
+      },
+      {
+        label: '體脂肪量 (kg)',
+        data: [37, 35, 35.9, 33.7],
+        backgroundColor: 'rgba(196,150,90,0.7)',
+        borderColor: '#C4965A',
+        borderWidth: 1,
+        borderRadius: 2,
+      },
+      {
+        label: '骨骼肌重 (kg)',
+        data: [22.3, 24.5, 22.7, 22.9],
+        backgroundColor: 'rgba(74,112,96,0.7)',
+        borderColor: '#4A7060',
+        borderWidth: 1,
+        borderRadius: 2,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: {
+          font: { family: 'DM Mono', size: 10 },
+          color: '#8A7A74',
+          boxWidth: 12
+        }
+      },
+      tooltip: {
+        backgroundColor: '#2C2420',
+        titleColor: '#E8C4B8',
+        bodyColor: '#FAF7F2',
+        padding: 12,
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { font: { family: 'DM Mono', size: 11 }, color: '#8A7A74' }
+      },
+      y: {
+        grid: { color: 'rgba(0,0,0,0.04)' },
+        ticks: {
+          font: { family: 'DM Mono', size: 10 },
+          color: '#8A7A74',
+          callback: v => v + ' kg'
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
