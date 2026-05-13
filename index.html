@@ -571,13 +571,13 @@ body {
   <div class="hero-stats">
     <div class="hero-stat s1">
       <div class="s-emoji">⚖️</div>
-      <div class="s-val">76.0</div>
+      <div class="s-val">75.6</div>
       <div class="s-label">目前體重 kg</div>
-      <div class="s-sub">4/30 量測</div>
+      <div class="s-sub">5/8 量測</div>
     </div>
     <div class="hero-stat s2">
       <div class="s-emoji">🎉</div>
-      <div class="s-val">▼5.45</div>
+      <div class="s-val">▼5.85</div>
       <div class="s-label">已減 kg</div>
       <div class="s-sub">起始 81.45kg</div>
     </div>
@@ -823,6 +823,7 @@ body {
         <tr><td>4/16</td><td><span class="dose-tag d5">5mg</span></td><td>76.4</td><td><span class="ch-down">▼0.3</span></td><td></td></tr>
         <tr><td>4/23</td><td><span class="dose-tag d5">5mg</span></td><td>75.8</td><td><span class="ch-down">▼0.6</span></td><td>報告：體脂44%，內臟15，評分58，身體年齡39</td></tr>
         <tr><td>4/30</td><td><span class="dose-tag d5">5mg</span></td><td>76.0</td><td><span class="ch-up">▲0.2</span></td><td>生理期前水腫</td></tr>
+        <tr><td>5/8</td><td><span class="dose-tag d5">5mg</span></td><td>75.6</td><td><span class="ch-down">▼0.4</span></td><td>生理期前，預計明後天來</td></tr>
       </tbody>
     </table>
     </div>
@@ -888,12 +889,11 @@ document.getElementById('days3').textContent = calcDays('2026-09-04');
 
 // Weight chart
 const weightCtx = document.getElementById('weightChart').getContext('2d');
-const wLabels = ['1/8','1/15','1/22','1/29','2/5','2/12','2/19','2/26','3/5','3/12','3/19','3/26','4/2','4/9','4/16','4/23','4/30'];
-const wData = [81.45,79.9,78.8,78.8,78.3,79.1,79.1,79.6,78.9,78.9,78.4,77.5,77.4,76.7,76.4,75.8,76.0];
+const wLabels = ['1/8','1/15','1/22','1/29','2/5','2/12','2/19','2/26','3/5','3/12','3/19','3/26','4/2','4/9','4/16','4/23','4/30','5/8'];
+const wData = [81.45,79.9,78.8,78.8,78.3,79.1,79.1,79.6,78.9,78.9,78.4,77.5,77.4,76.7,76.4,75.8,76.0,75.6];
 
 const ptColors = wData.map((_,i) => i<=6 ? '#FFB3CC' : i<=11 ? '#F06292' : '#F48FB1');
 const ptBorders = wData.map((_,i) => i<=6 ? '#F06292' : i<=11 ? '#C2185B' : '#AD1457');
-
 new Chart(weightCtx, {
   type: 'line',
   data: {
