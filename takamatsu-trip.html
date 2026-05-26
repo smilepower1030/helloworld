@@ -36,9 +36,9 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     text-align: center;
-    padding: 60px 20px;
+    padding: 80px 20px 220px;
   }
 
   .hero::before {
@@ -119,8 +119,6 @@
     gap: 40px;
     flex-wrap: wrap;
     justify-content: center;
-    opacity: 0;
-    animation: fadeUp 0.8s ease forwards 0.8s;
   }
 
   .hero-info-item {
@@ -143,10 +141,132 @@
     font-weight: 400;
   }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
+  .flight-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 28px 36px;
+    margin-top: 40px;
+    width: 100%;
+    max-width: 680px;
+    position: relative;
+    backdrop-filter: blur(12px);
+    z-index: 2;
   }
+
+  .flight-card::before, .flight-card::after {
+    content: '';
+    position: absolute;
+    width: 28px; height: 28px;
+    background: #0d2137;
+    border-radius: 50%;
+    top: 50%; transform: translateY(-50%);
+  }
+  .flight-card::before { left: -14px; }
+  .flight-card::after { right: -14px; }
+
+  .flight-card-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .flight-card-label::before, .flight-card-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+  }
+
+  .flight-rows { display: flex; flex-direction: column; gap: 16px; }
+
+  .flight-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .flight-endpoint { text-align: center; }
+
+  .flight-code {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 600;
+    color: white;
+    line-height: 1;
+  }
+
+  .flight-time {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    color: var(--gold);
+    font-weight: 400;
+    margin-top: 4px;
+  }
+
+  .flight-city {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.15em;
+    margin-top: 4px;
+  }
+
+  .flight-middle { text-align: center; }
+
+  .flight-arrow {
+    font-size: 1.4rem;
+    color: var(--wave);
+    display: block;
+  }
+
+  .flight-number {
+    font-size: 0.65rem;
+    color: var(--wave);
+    letter-spacing: 0.2em;
+    margin-top: 4px;
+  }
+
+  .flight-date {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+  }
+
+  .flight-divider {
+    border: none;
+    border-top: 1px dashed rgba(255,255,255,0.15);
+    margin: 4px 0;
+  }
+
+  .flight-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed rgba(255,255,255,0.15);
+  }
+
+  .flight-footer-item .fl-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .flight-footer-item .fl-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.85);
+  }
+
 
   /* SECTION */
   .section {
@@ -569,20 +689,83 @@
   <p class="hero-subtitle">Art, Onsen & Island Hopping — 5 Days 4 Nights</p>
   <div class="hero-info">
     <div class="hero-info-item">
-      <span class="label">出發</span>
+      <span class="label">出發日期</span>
       <span class="value">2026年6月19日（五）</span>
     </div>
     <div class="hero-info-item">
-      <span class="label">返程</span>
-      <span class="value">2025年6月23日（二）</span>
+      <span class="label">返程日期</span>
+      <span class="value">2026年6月23日（二）</span>
     </div>
     <div class="hero-info-item">
       <span class="label">旅遊人數</span>
       <span class="value">2 人</span>
     </div>
-    <div class="hero-info-item">
-      <span class="label">航班</span>
-      <span class="value">TPE ⇆ TAK</span>
+  </div>
+
+  <div class="flight-card">
+    <div class="flight-card-label">✈ 中華航空 China Airlines · 機票確認</div>
+    <div class="flight-rows">
+      <div class="flight-row">
+        <div class="flight-endpoint">
+          <div class="flight-code">TPE</div>
+          <div class="flight-time">06:55</div>
+          <div class="flight-city">桃園國際機場 T2</div>
+        </div>
+        <div class="flight-middle">
+          <span class="flight-arrow">✈ ──────</span>
+          <div class="flight-number">CI 278</div>
+          <div class="flight-date">6月19日 · 2h35m</div>
+        </div>
+        <div class="flight-endpoint">
+          <div class="flight-code">TAK</div>
+          <div class="flight-time">10:30</div>
+          <div class="flight-city">高松空港</div>
+        </div>
+      </div>
+      <hr class="flight-divider">
+      <div class="flight-row">
+        <div class="flight-endpoint">
+          <div class="flight-code">TAK</div>
+          <div class="flight-time">19:05</div>
+          <div class="flight-city">高松空港</div>
+        </div>
+        <div class="flight-middle">
+          <span class="flight-arrow">✈ ──────</span>
+          <div class="flight-number">CI 179</div>
+          <div class="flight-date">6月23日 · 2h50m</div>
+        </div>
+        <div class="flight-endpoint">
+          <div class="flight-code">TPE</div>
+          <div class="flight-time">20:55</div>
+          <div class="flight-city">桃園國際機場 T2</div>
+        </div>
+      </div>
+    </div>
+    <div class="flight-footer">
+      <div class="flight-footer-item">
+        <span class="fl-label">訂位代號</span>
+        <span class="fl-value">EIYMTM</span>
+      </div>
+      <div class="flight-footer-item">
+        <span class="fl-label">機票號碼</span>
+        <span class="fl-value">2979492328678</span>
+      </div>
+      <div class="flight-footer-item">
+        <span class="fl-label">艙等</span>
+        <span class="fl-value">去程 Q／回程 K</span>
+      </div>
+      <div class="flight-footer-item">
+        <span class="fl-label">機型</span>
+        <span class="fl-value">A321 NEO</span>
+      </div>
+      <div class="flight-footer-item">
+        <span class="fl-label">托運行李</span>
+        <span class="fl-value">去程 1PC · 回程 2PC（各 23KG）</span>
+      </div>
+      <div class="flight-footer-item">
+        <span class="fl-label">旅客</span>
+        <span class="fl-value">CHEN / YANG</span>
+      </div>
     </div>
   </div>
 </section>
@@ -701,6 +884,16 @@
           </li>
         </ul>
       </div>
+      <div style="padding: 0 32px 28px;">
+        <div style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:12px;">🗺️ Day 1 地圖 · 高松市區</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <a href="https://maps.google.com/?q=栗林公園,高松市" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 栗林公園</a>
+          <a href="https://maps.google.com/?q=玉藻城,高松市" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 玉藻城</a>
+          <a href="https://maps.google.com/?q=北浜alley,高松市" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 北濱 alley</a>
+          <a href="https://maps.google.com/?q=骨付鳥一鶴高松店" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 骨付鳥一鶴</a>
+          <a href="https://maps.google.com/?q=麺処綿谷高松店" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 麺處綿谷</a>
+        </div>
+      </div>
     </div>
 
     <!-- DAY 2 -->
@@ -801,6 +994,15 @@
           </li>
         </ul>
       </div>
+      <div style="padding: 0 32px 28px;">
+        <div style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:12px;">🗺️ Day 2 地圖 · 直島</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <a href="https://maps.google.com/?q=Benesse+House+Museum,Naoshima" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 Benesse House</a>
+          <a href="https://maps.google.com/?q=地中美術館,直島" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 地中美術館</a>
+          <a href="https://maps.google.com/?q=直島新美術館" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 直島新美術館</a>
+          <a href="https://maps.google.com/?q=草間彌生黄かぼちゃ,直島" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 草間彌生黃南瓜</a>
+        </div>
+      </div>
     </div>
 
     <!-- DAY 3 -->
@@ -836,11 +1038,11 @@
             </div>
           </li>
           <li class="timeline-item">
-            <span class="tl-time">09:30</span>
+            <span class="tl-time">10:10</span>
             <div class="tl-dot"></div>
             <div class="tl-content">
-              <div class="tl-name"><span class="emoji">🚗</span>土庄港附近租車出發</div>
-              <div class="tl-note">土庄港周邊有多家租車行，建議提前預約（6 月旺季）<br><span class="badge blue">¥5,000～7,000／天</span>行動自由，不受巴士班次限制</div>
+              <div class="tl-name"><span class="emoji">🚲</span>オーキドホテル 租電動自行車</div>
+              <div class="tl-note">土庄港正前方，步行 1 分鐘<br><span class="badge blue">¥1,300／日</span>提供電動自行車＋一般自行車，<span class="badge red">⚠️ 建議提前網路預約</span><br>📍 購票地點：オーキドホテル 1 樓租車櫃台</div>
             </div>
           </li>
           <li class="timeline-item">
@@ -855,8 +1057,16 @@
             <span class="tl-time">11:00</span>
             <div class="tl-dot highlight"></div>
             <div class="tl-content">
+              <div class="tl-name"><span class="emoji">🚌</span>搭橄欖巴士 → 寒霞溪</div>
+              <div class="tl-note">山路陡坡，單程搭巴士最省力，電動自行車留做平地騎乘<br><span class="badge blue">單程票約 ¥500</span>📍 購票地點：土庄港巴士站現場購票或車上付款</div>
+            </div>
+          </li>
+          <li class="timeline-item">
+            <span class="tl-time">11:30</span>
+            <div class="tl-dot highlight"></div>
+            <div class="tl-content">
               <div class="tl-name"><span class="emoji">🗻</span>寒霞溪纜車</div>
-              <div class="tl-note">日本三大渓谷美景，夏季綠意盎然，空中俯瞰瀨戶內海<br><span class="badge blue">¥2,340 來回</span>💡 建議事先在 Klook / Veltra 購買折扣票（約 ¥2,110），無需預約時段</div>
+              <div class="tl-note">日本三大渓谷美景，夏季綠意盎然，空中俯瞰瀨戶內海<br><span class="badge blue">¥2,340 來回</span>💡 建議事先在 Klook / Veltra 購買折扣票（約 ¥2,110），無需預約時段<br>📍 購票地點：寒霞溪山麓站售票機，或 Klook 手機出示</div>
             </div>
           </li>
           <li class="timeline-item">
@@ -892,6 +1102,16 @@
             </div>
           </li>
         </ul>
+      </div>
+      <div style="padding: 0 32px 28px;">
+        <div style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:12px;">🗺️ Day 3 地圖 · 小豆島</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <a href="https://maps.google.com/?q=小豆島オリーブ公園" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 橄欖公園</a>
+          <a href="https://maps.google.com/?q=寒霞渓ロープウェイ,小豆島" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 寒霞溪纜車</a>
+          <a href="https://maps.google.com/?q=土渕海峡,小豆島" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 土淵海峽</a>
+          <a href="https://maps.google.com/?q=エンジェルロード,小豆島" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 天使之路</a>
+          <a href="https://maps.google.com/?q=小豆島国際ホテル" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 小豆島國際飯店</a>
+        </div>
       </div>
     </div>
 
@@ -1025,6 +1245,15 @@
           </li>
         </ul>
       </div>
+      <div style="padding: 0 32px 28px;">
+        <div style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:12px;">🗺️ Day 4 地圖 · 琴平 × 丸龜</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <a href="https://maps.google.com/?q=金刀比羅宮,琴平" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 金刀比羅宮</a>
+          <a href="https://maps.google.com/?q=丸亀城" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 丸龜城</a>
+          <a href="https://maps.google.com/?q=麺処綿谷丸亀本店" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 麺處綿谷丸龜本店</a>
+          <a href="https://maps.google.com/?q=琴平駅" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 琴平站</a>
+        </div>
+      </div>
     </div>
 
     <!-- DAY 5 -->
@@ -1101,8 +1330,126 @@
           </li>
         </ul>
       </div>
+      <div style="padding: 0 32px 28px;">
+        <div style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--soft);margin-bottom:12px;">🗺️ Day 5 地圖 · 高松市區</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <a href="https://maps.google.com/?q=高松中央商店街" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 高松中央商店街</a>
+          <a href="https://maps.google.com/?q=讃岐麺業兵庫町本店,高松" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 讚岐麺業</a>
+          <a href="https://maps.google.com/?q=高松空港" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#e8f4f8;color:#2d6a8f;font-size:0.78rem;padding:8px 14px;border-radius:20px;text-decoration:none;border:1px solid rgba(45,106,143,0.2);">📍 高松空港</a>
+        </div>
+      </div>
     </div>
 
+  </div>
+</section>
+
+
+<!-- WEATHER -->
+<section style="padding: 80px 20px; background: var(--mist);">
+  <div style="max-width:900px;margin:0 auto;">
+    <p class="section-label">Weather Reference</p>
+    <h2 class="section-title" style="color:var(--ink);">天氣參考 · 穿搭建議</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;">
+      <div style="background:white;border-radius:12px;padding:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+        <div style="font-size:12px;color:#6b7f8e;margin-bottom:6px;">平均白天氣溫</div>
+        <div style="font-size:22px;font-weight:500;color:#1a1a2e;">24–27°C</div>
+        <div style="font-size:12px;color:#6b7f8e;margin-top:2px;">最高可達 30°C</div>
+      </div>
+      <div style="background:white;border-radius:12px;padding:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+        <div style="font-size:12px;color:#6b7f8e;margin-bottom:6px;">平均夜間氣溫</div>
+        <div style="font-size:22px;font-weight:500;color:#1a1a2e;">19–22°C</div>
+        <div style="font-size:12px;color:#6b7f8e;margin-top:2px;">室外涼快，室內悶熱</div>
+      </div>
+      <div style="background:white;border-radius:12px;padding:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+        <div style="font-size:12px;color:#6b7f8e;margin-bottom:6px;">月降雨量</div>
+        <div style="font-size:22px;font-weight:500;color:#1a1a2e;">~170mm</div>
+        <div style="font-size:12px;color:#6b7f8e;margin-top:2px;">梅雨季，隨時備傘</div>
+      </div>
+      <div style="background:white;border-radius:12px;padding:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+        <div style="font-size:12px;color:#6b7f8e;margin-bottom:6px;">平均濕度</div>
+        <div style="font-size:22px;font-weight:500;color:#1a1a2e;">80%</div>
+        <div style="font-size:12px;color:#6b7f8e;margin-top:2px;">悶熱感明顯</div>
+      </div>
+    </div>
+
+    <div style="font-size:13px;font-weight:500;color:#6b7f8e;margin-bottom:10px;letter-spacing:0.05em;">6月19–23日 歷史氣候參考（非即時預報）</div>
+
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:28px;">
+      <div style="background:white;border:1px solid rgba(45,106,143,0.08);border-radius:16px;padding:12px 8px;text-align:center;">
+        <div style="font-size:11px;color:#6b7f8e;margin-bottom:4px;">Day 1</div>
+        <div style="font-size:12px;font-weight:500;color:#1a1a2e;margin-bottom:6px;">6/19 五</div>
+        <div style="font-size:22px;margin-bottom:6px;">🌧</div>
+        <div style="display:flex;justify-content:center;gap:6px;font-size:12px;margin-bottom:6px;"><span style="font-weight:500;color:#1a1a2e;">27°</span><span style="color:#6b7f8e;">21°</span></div>
+        <div style="background:#e8f4f8;border-radius:4px;height:4px;margin:4px 0;overflow:hidden;"><div style="width:70%;height:100%;background:#2d6a8f;border-radius:4px;"></div></div>
+        <div style="font-size:11px;color:#6b7f8e;">降雨 70%</div>
+      </div>
+      <div style="background:white;border:1px solid rgba(45,106,143,0.08);border-radius:16px;padding:12px 8px;text-align:center;">
+        <div style="font-size:11px;color:#6b7f8e;margin-bottom:4px;">Day 2</div>
+        <div style="font-size:12px;font-weight:500;color:#1a1a2e;margin-bottom:6px;">6/20 六</div>
+        <div style="font-size:22px;margin-bottom:6px;">⛅</div>
+        <div style="display:flex;justify-content:center;gap:6px;font-size:12px;margin-bottom:6px;"><span style="font-weight:500;color:#1a1a2e;">26°</span><span style="color:#6b7f8e;">20°</span></div>
+        <div style="background:#e8f4f8;border-radius:4px;height:4px;margin:4px 0;overflow:hidden;"><div style="width:55%;height:100%;background:#2d6a8f;border-radius:4px;"></div></div>
+        <div style="font-size:11px;color:#6b7f8e;">降雨 55%</div>
+      </div>
+      <div style="background:white;border:1px solid rgba(45,106,143,0.08);border-radius:16px;padding:12px 8px;text-align:center;">
+        <div style="font-size:11px;color:#6b7f8e;margin-bottom:4px;">Day 3</div>
+        <div style="font-size:12px;font-weight:500;color:#1a1a2e;margin-bottom:6px;">6/21 日</div>
+        <div style="font-size:22px;margin-bottom:6px;">🌦</div>
+        <div style="display:flex;justify-content:center;gap:6px;font-size:12px;margin-bottom:6px;"><span style="font-weight:500;color:#1a1a2e;">27°</span><span style="color:#6b7f8e;">21°</span></div>
+        <div style="background:#e8f4f8;border-radius:4px;height:4px;margin:4px 0;overflow:hidden;"><div style="width:65%;height:100%;background:#2d6a8f;border-radius:4px;"></div></div>
+        <div style="font-size:11px;color:#6b7f8e;">降雨 65%</div>
+      </div>
+      <div style="background:white;border:1px solid rgba(45,106,143,0.08);border-radius:16px;padding:12px 8px;text-align:center;">
+        <div style="font-size:11px;color:#6b7f8e;margin-bottom:4px;">Day 4</div>
+        <div style="font-size:12px;font-weight:500;color:#1a1a2e;margin-bottom:6px;">6/22 一</div>
+        <div style="font-size:22px;margin-bottom:6px;">⛅</div>
+        <div style="display:flex;justify-content:center;gap:6px;font-size:12px;margin-bottom:6px;"><span style="font-weight:500;color:#1a1a2e;">28°</span><span style="color:#6b7f8e;">22°</span></div>
+        <div style="background:#e8f4f8;border-radius:4px;height:4px;margin:4px 0;overflow:hidden;"><div style="width:50%;height:100%;background:#2d6a8f;border-radius:4px;"></div></div>
+        <div style="font-size:11px;color:#6b7f8e;">降雨 50%</div>
+      </div>
+      <div style="background:white;border:1px solid rgba(45,106,143,0.08);border-radius:16px;padding:12px 8px;text-align:center;">
+        <div style="font-size:11px;color:#6b7f8e;margin-bottom:4px;">Day 5</div>
+        <div style="font-size:12px;font-weight:500;color:#1a1a2e;margin-bottom:6px;">6/23 二</div>
+        <div style="font-size:22px;margin-bottom:6px;">🌤</div>
+        <div style="display:flex;justify-content:center;gap:6px;font-size:12px;margin-bottom:6px;"><span style="font-weight:500;color:#1a1a2e;">28°</span><span style="color:#6b7f8e;">22°</span></div>
+        <div style="background:#e8f4f8;border-radius:4px;height:4px;margin:4px 0;overflow:hidden;"><div style="width:40%;height:100%;background:#2d6a8f;border-radius:4px;"></div></div>
+        <div style="font-size:11px;color:#6b7f8e;">降雨 40%</div>
+      </div>
+    </div>
+
+    <div style="font-size:13px;font-weight:500;color:#2c3e50;margin-bottom:12px;">每日穿搭建議</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:20px;">
+      <div style="background:white;border:1px solid rgba(45,106,143,0.08);border-radius:14px;padding:14px;">
+        <div style="font-size:11px;color:#6b7f8e;margin-bottom:4px;">Day 1 · 抵達高松</div>
+        <div style="font-size:12px;color:#2c3e50;line-height:1.7;">輕薄長袖上衣<br>薄外套或防風外套<br>舒適步行鞋</div>
+        <div style="margin-top:6px;"><span style="background:#e3f2fd;color:#1565c0;font-size:11px;padding:2px 8px;border-radius:20px;margin-right:4px;">☂ 必帶傘</span></div>
+      </div>
+      <div style="background:white;border:1px solid rgba(45,106,143,0.08);border-radius:14px;padding:14px;">
+        <div style="font-size:11px;color:#6b7f8e;margin-bottom:4px;">Day 2 · 直島騎車</div>
+        <div style="font-size:12px;color:#2c3e50;line-height:1.7;">透氣排汗 T-shirt<br>輕薄長褲或七分褲<br>運動鞋</div>
+        <div style="margin-top:6px;"><span style="background:#e3f2fd;color:#1565c0;font-size:11px;padding:2px 8px;border-radius:20px;margin-right:4px;">☂ 備傘</span></div>
+      </div>
+      <div style="background:white;border:1px solid rgba(45,106,143,0.08);border-radius:14px;padding:14px;">
+        <div style="font-size:11px;color:#6b7f8e;margin-bottom:4px;">Day 3 · 小豆島</div>
+        <div style="font-size:12px;color:#2c3e50;line-height:1.7;">排汗 T-shirt<br>輕薄長褲<br>防滑鞋（纜車山路）</div>
+        <div style="margin-top:6px;"><span style="background:#e3f2fd;color:#1565c0;font-size:11px;padding:2px 8px;border-radius:20px;margin-right:4px;">☂ 必帶傘</span></div>
+      </div>
+      <div style="background:white;border:1px solid rgba(45,106,143,0.08);border-radius:14px;padding:14px;">
+        <div style="font-size:11px;color:#6b7f8e;margin-bottom:4px;">Day 4 · 金刀比羅宮</div>
+        <div style="font-size:12px;color:#2c3e50;line-height:1.7;">輕薄長袖<br>舒適長褲<br>好走平底鞋（785階）</div>
+        <div style="margin-top:6px;"><span style="background:#e3f2fd;color:#1565c0;font-size:11px;padding:2px 8px;border-radius:20px;margin-right:4px;">☂ 備傘</span></div>
+      </div>
+      <div style="background:white;border:1px solid rgba(45,106,143,0.08);border-radius:14px;padding:14px;">
+        <div style="font-size:11px;color:#6b7f8e;margin-bottom:4px;">Day 5 · 返程</div>
+        <div style="font-size:12px;color:#2c3e50;line-height:1.7;">輕薄舒適穿搭<br>方便安檢的鞋<br>行李備防水袋</div>
+        <div style="margin-top:6px;"><span style="background:#fef3e2;color:#c17f24;font-size:11px;padding:2px 8px;border-radius:20px;">較晴朗</span></div>
+      </div>
+    </div>
+
+    <div style="background:white;border-left:3px solid #2d6a8f;border-radius:0 12px 12px 0;padding:12px 16px;font-size:12px;color:#6b7f8e;line-height:1.8;">
+      ⚠️ 以上為高松 6 月歷史平均氣候，非即時天氣預報。出發前 7 天建議查詢<a href="https://www.jma.go.jp" style="color:#2d6a8f;">日本氣象廳</a>獲取準確預報。梅雨季折疊傘全程必備，建議兩人各備一把。
+    </div>
   </div>
 </section>
 
@@ -1154,62 +1501,158 @@
   <div style="max-width:900px;margin:0 auto;">
     <p class="section-label">Transportation</p>
     <h2 class="section-title" style="color:var(--ink);">交通總整理</h2>
-    <div class="transport-grid">
-      <div class="transport-card">
-        <div class="transport-route">高松市區 Day 1</div>
-        <div class="transport-method">🚃 琴電一日券</div>
-        <div class="transport-detail">全線無限搭乘，栗林公園・瓦町・高松築港皆適用</div>
-        <div class="transport-price">¥800</div>
-      </div>
-      <div class="transport-card">
-        <div class="transport-route">空港 → 市區</div>
-        <div class="transport-method">🚌 利木津巴士</div>
-        <div class="transport-detail">約 45 分鐘，可刷 IC 卡</div>
-        <div class="transport-price">¥1,000</div>
-      </div>
-      <div class="transport-card">
-        <div class="transport-route">高松 → 直島</div>
-        <div class="transport-method">🚢 渡輪（宮浦港）</div>
-        <div class="transport-detail">約 60 分鐘，建議 08:00 前到</div>
-        <div class="transport-price">¥580</div>
-      </div>
-      <div class="transport-card">
-        <div class="transport-route">高松 → 小豆島</div>
-        <div class="transport-method">🚢 快艇（土庄港）</div>
-        <div class="transport-detail">約 40 分鐘，現場購票</div>
-        <div class="transport-price">¥1,200</div>
-      </div>
-      <div class="transport-card">
-        <div class="transport-route">小豆島 島內</div>
-        <div class="transport-method">🚗 租車</div>
-        <div class="transport-detail">土庄港附近租車行，建議提前預約（6 月旺季）</div>
-        <div class="transport-price">¥5,000～7,000／天</div>
-      </div>
-      <div class="transport-card">
-        <div class="transport-route">高松 → 琴平</div>
-        <div class="transport-method">🚆 JR 特急</div>
-        <div class="transport-detail">約 40 分鐘</div>
-        <div class="transport-price">¥1,500</div>
-      </div>
-      <div class="transport-card">
-        <div class="transport-route">琴平 → 丸龜</div>
-        <div class="transport-method">🚆 JR</div>
-        <div class="transport-detail">約 15 分鐘</div>
-        <div class="transport-price">¥230</div>
-      </div>
-      <div class="transport-card">
-        <div class="transport-route">市區 → 空港</div>
-        <div class="transport-method">🚌 利木津巴士</div>
-        <div class="transport-detail">約 45 分鐘，15:30 出發</div>
-        <div class="transport-price">¥1,000</div>
-      </div>
-      <div class="transport-card">
-        <div class="transport-route">直島 島內</div>
-        <div class="transport-method">🚲 電動自行車</div>
-        <div class="transport-detail">宮浦港租借，最推薦方式</div>
-        <div class="transport-price">¥1,500</div>
+
+    <style>
+      .day-transport { margin-bottom: 32px; }
+      .day-transport-title {
+        font-family: 'Noto Serif TC', serif;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--sea);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid var(--wave);
+      }
+      .map-container {
+        margin-top: 48px;
+      }
+      .map-day-title {
+        font-family: 'Noto Serif TC', serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--ink);
+        margin: 24px 0 12px;
+      }
+      .map-frame {
+        width: 100%;
+        height: 360px;
+        border-radius: 16px;
+        border: none;
+        box-shadow: 0 4px 20px rgba(45,106,143,0.12);
+      }
+    </style>
+
+    <!-- Day 1 -->
+    <div class="day-transport">
+      <div class="day-transport-title">📅 Day 1 · 6/19（五）高松市區</div>
+      <div class="transport-grid">
+        <div class="transport-card">
+          <div class="transport-route">空港 → 市區</div>
+          <div class="transport-method">🚌 利木津巴士</div>
+          <div class="transport-detail">約 45 分鐘，可刷 IC 卡，停靠瓦町・高松站</div>
+          <div class="transport-price">免費（香川招待票）</div>
+        </div>
+        <div class="transport-card">
+          <div class="transport-route">市區內移動</div>
+          <div class="transport-method">🚃 琴電一日券</div>
+          <div class="transport-detail">全線無限搭乘，琴電高松築港站購票</div>
+          <div class="transport-price">¥800</div>
+        </div>
       </div>
     </div>
+
+    <!-- Day 2 -->
+    <div class="day-transport">
+      <div class="day-transport-title">📅 Day 2 · 6/20（六）直島</div>
+      <div class="transport-grid">
+        <div class="transport-card">
+          <div class="transport-route">高松港 → 直島宮浦港</div>
+          <div class="transport-method">🚢 高速船</div>
+          <div class="transport-detail">09:20 出發，約 30 分鐘，高松港售票窗口現場購票</div>
+          <div class="transport-price">¥1,220</div>
+        </div>
+        <div class="transport-card">
+          <div class="transport-route">直島 島內</div>
+          <div class="transport-method">🚲 電動自行車</div>
+          <div class="transport-detail">宮浦港旁租借，最推薦方式</div>
+          <div class="transport-price">¥1,500</div>
+        </div>
+        <div class="transport-card">
+          <div class="transport-route">直島宮浦港 → 高松港</div>
+          <div class="transport-method">🚢 渡輪</div>
+          <div class="transport-detail">17:00 出發，約 60 分鐘，宮浦港售票窗口購票</div>
+          <div class="transport-price">¥580</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="day-transport">
+      <div class="day-transport-title">📅 Day 3 · 6/21（日）小豆島</div>
+      <div class="transport-grid">
+        <div class="transport-card">
+          <div class="transport-route">高松港 → 土庄港</div>
+          <div class="transport-method">🚢 高速艇</div>
+          <div class="transport-detail">09:20 出發，約 35 分鐘，高松港高速艇售票窗口購票（現金）</div>
+          <div class="transport-price">免費（香川招待票）</div>
+        </div>
+        <div class="transport-card">
+          <div class="transport-route">小豆島 平地</div>
+          <div class="transport-method">🚲 電動自行車</div>
+          <div class="transport-detail">オーキドホテル（土庄港正前方），建議提前網路預約</div>
+          <div class="transport-price">¥1,300／日</div>
+        </div>
+        <div class="transport-card">
+          <div class="transport-route">小豆島 → 寒霞溪</div>
+          <div class="transport-method">🚌 橄欖巴士單程</div>
+          <div class="transport-detail">山路陡坡，土庄港バスターミナル現場購票或車上付款</div>
+          <div class="transport-price">約 ¥500／單程</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="day-transport">
+      <div class="day-transport-title">📅 Day 4 · 6/22（一）小豆島 → 高松 → 琴平 → 丸龜</div>
+      <div class="transport-grid">
+        <div class="transport-card">
+          <div class="transport-route">土庄港 → 高松港</div>
+          <div class="transport-method">🚢 高速艇</div>
+          <div class="transport-detail">09:20 出發，約 35 分鐘，土庄港售票窗口購票（現金）</div>
+          <div class="transport-price">免費（香川招待票）</div>
+        </div>
+        <div class="transport-card">
+          <div class="transport-route">高松港 → Dormy Inn</div>
+          <div class="transport-method">🚕 計程車</div>
+          <div class="transport-detail">高松港搭車，約 10 分鐘，先寄放行李</div>
+          <div class="transport-price">¥800～1,000</div>
+        </div>
+        <div class="transport-card">
+          <div class="transport-route">高松站 → 琴平站</div>
+          <div class="transport-method">🚆 JR 特急</div>
+          <div class="transport-detail">步行 10 分鐘至高松站，約 40 分鐘，JR 高松站窗口購票</div>
+          <div class="transport-price">¥1,500</div>
+        </div>
+        <div class="transport-card">
+          <div class="transport-route">琴平站 → 丸龜站</div>
+          <div class="transport-method">🚆 JR</div>
+          <div class="transport-detail">約 15 分鐘，琴平站購票</div>
+          <div class="transport-price">¥230</div>
+        </div>
+        <div class="transport-card">
+          <div class="transport-route">丸龜站 → 高松站</div>
+          <div class="transport-method">🚆 JR</div>
+          <div class="transport-detail">約 30 分鐘，丸龜站購票</div>
+          <div class="transport-price">¥680</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 5 -->
+    <div class="day-transport">
+      <div class="day-transport-title">📅 Day 5 · 6/23（二）返程</div>
+      <div class="transport-grid">
+        <div class="transport-card">
+          <div class="transport-route">市區 → 高松空港</div>
+          <div class="transport-method">🚌 利木津巴士</div>
+          <div class="transport-detail">15:30 出發，約 45 分鐘，高松站旁巴士站購票</div>
+          <div class="transport-price">免費（香川招待票）</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1317,25 +1760,29 @@
     <p class="section-label">Budget Estimate</p>
     <h2 class="section-title" style="text-align:left;">費用概估（每人）</h2>
     <div class="budget-table">
-      <div class="budget-row"><span>機場巴士（來回）</span><span class="amount">¥2,000</span></div>
-      <div class="budget-row"><span>高松 ⇆ 直島渡輪</span><span class="amount">¥1,160</span></div>
-      <div class="budget-row"><span>高松 ⇆ 小豆島快艇</span><span class="amount">¥2,400</span></div>
-      <div class="budget-row"><span>小豆島橄欖巴士一日券</span><span class="amount">¥1,600</span></div>
+      <div class="budget-row"><span>機場巴士（來回）</span><span class="amount" style="color:#4a9bbe;">免費（香川招待票）</span></div>
+      <div class="budget-row"><span>高松 ⇆ 小豆島渡輪（來回）</span><span class="amount" style="color:#4a9bbe;">免費（香川招待票）</span></div>
+      <div class="budget-row"><span>栗林公園</span><span class="amount" style="color:#4a9bbe;">免費（香川招待票）</span></div>
+      <div class="budget-row"><span>高松 ⇆ 直島渡輪（來回）</span><span class="amount">¥1,160</span></div>
       <div class="budget-row"><span>直島電動自行車</span><span class="amount">¥1,500</span></div>
-      <div class="budget-row"><span>地中美術館</span><span class="amount">¥3,000</span></div>
+      <div class="budget-row"><span>小豆島 電動自行車</span><span class="amount">¥1,300</span></div>
+      <div class="budget-row"><span>小豆島 橄欖巴士單程（寒霞溪）</span><span class="amount">¥500</span></div>
+      <div class="budget-row"><span>高松港 → Dormy Inn 計程車（Day 4）</span><span class="amount">¥800～1,000</span></div>
+      <div class="budget-row"><span>琴電一日券（Day 1）</span><span class="amount">¥800</span></div>
+      <div class="budget-row"><span>JR 高松 → 琴平 → 丸龜 → 高松</span><span class="amount">¥2,410</span></div>
+      <div class="budget-row"><span>地中美術館（2人）</span><span class="amount" style="color:#4a9bbe;">¥5,400 ✅ 已預約</span></div>
       <div class="budget-row"><span>Benesse House Museum</span><span class="amount">¥1,030</span></div>
       <div class="budget-row"><span>直島新美術館</span><span class="amount">¥1,500</span></div>
-      <div class="budget-row"><span>寒霞溪纜車</span><span class="amount">¥1,500</span></div>
-      <div class="budget-row"><span>JR 琴平 + 丸龜</span><span class="amount">¥3,460</span></div>
-      <div class="budget-row"><span>丸龜城</span><span class="amount">¥400</span></div>
+      <div class="budget-row"><span>寒霞溪纜車（Klook 折扣票）</span><span class="amount">¥2,110</span></div>
       <div class="budget-row"><span>玉藻城</span><span class="amount">¥200</span></div>
-      <div class="budget-row"><span>住宿 4 晚（Dormy 2晚＋小豆島1晚＋JR1晚）</span><span class="amount">¥25,000</span></div>
+      <div class="budget-row"><span>丸龜城</span><span class="amount">¥400</span></div>
+      <div class="budget-row"><span>行李宅配（Day 5 空港）</span><span class="amount">¥1,000～1,500</span></div>
       <div class="budget-total">
-        <span class="label">交通 + 門票 + 住宿 概估總計</span>
-        <span class="total">≈ ¥44,750</span>
+        <span class="label">交通 + 門票 概估總計（每人）</span>
+        <span class="total">≈ ¥19,810</span>
       </div>
     </div>
-    <p style="font-size:0.72rem;color:rgba(255,255,255,0.35);margin-top:16px;text-align:center;">※ 餐費、伴手禮另計。住宿費用為每人均攤估算。</p>
+    <p style="font-size:0.72rem;color:rgba(255,255,255,0.35);margin-top:16px;text-align:center;">※ 餐費、伴手禮、住宿另計。香川招待票以 2026 年活動延續為前提，出發前請至華航官網確認。</p>
   </div>
 </section>
 
